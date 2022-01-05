@@ -1,10 +1,12 @@
 name: cbnew-auto-push
 
 on:
+  push:
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
-  schedule:
-    # 每工作日9:00执行，转为UTC要减8小时
+    branches: [ main ]
+  workflow_dispatch: # 手动触发
+  schedule: # 计划任务触发
     - cron: '0 1 * * 1-5'
 
 jobs:
