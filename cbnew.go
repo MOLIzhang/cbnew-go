@@ -154,3 +154,4 @@ type Cell struct {
 	DrawRate  string `json:"lucky_draw_rt"`
 	Rating    string `json:"rating_cd"`
 }
+ 
