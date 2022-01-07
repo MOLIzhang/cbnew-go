@@ -63,11 +63,15 @@ func doJob() {
 	applyList, listList := getTodayCbInfo()
 	for _, apply := range applyList {
 		pushInfo("今日可打新债", apply)
-	
+	}
+	for _, list := range listList {
+		pushInfo("今日上市债券", list)
 	}
 	if len(applyList) == 0 {
 		pushInfo("今日无可打新债", "")
-	
+	}
+	if len(listList) == 0 {
+		pushInfo("今日无上市债券", "")
 	}
 }
 
