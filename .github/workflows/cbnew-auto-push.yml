@@ -4,6 +4,7 @@ on:
   schedule:
     # 每工作日9:00执行，转为UTC要减8小时
     - cron: '0 1 * * 1-5'
+  workflow_dispatch: # 这一行将允许您手动启动此工作流
 
 jobs:
   build:
