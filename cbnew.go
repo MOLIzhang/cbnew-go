@@ -13,7 +13,7 @@ import (
 var (
 	schedule bool
 	sckey    string
-	barkkey  string
+	barkkeys []string // 修改为切片
 	hour     int
 	minute   int
 )
@@ -30,6 +30,7 @@ func main() {
 }
 
 func init() {
+	var barkkey string // 保留原始的 barkkey 字符串
 	flag.StringVar(&sckey, "sckey", "", "请设置SCKEY")
 	flag.StringVar(&barkkey, "barkkey", "", "请设置BarkKey")
 	flag.BoolVar(&schedule, "s", false, "请设置是否调度")
@@ -39,6 +40,7 @@ func init() {
 	if sckey == "" && barkkey == "" {
 		panic("请至少设置sckey或barkkey其中一种")
 	}
+	barkkeys = strings.Split(barkkey, ",") // 将字符串分割为多个 BarkKey
 }
 
 func pushInfo(title string, text string) {
@@ -52,10 +54,12 @@ func pushInfo(title string, text string) {
 	}
 
 	// 使用Bark推送
-	if barkkey != "" {
-		resp, _ := http.Get("https://api.day.app/" + barkkey + "/" + title + "/" + text)
-		body, _ := ioutil.ReadAll(resp.Body)
-		fmt.Println("BARK推送结果" + string(body))
+	for _, key := range barkkeys { // 遍历所有的 BarkKey
+		if key != "" {
+			resp, _ := http.Get("https://api.day.app/" + key + "/" + title + "/" + text)
+			body, _ := ioutil.ReadAll(resp.Body)
+			fmt.Println("BARK推送结果" + string(body))
+		}
 	}
 }
 
@@ -65,7 +69,6 @@ func doJob() {
 		pushInfo("今日可打新债", apply)
 	}
 }
-
 
 func startScheduler(hour int, minute int, duration time.Duration) {
 	now := time.Now()
@@ -146,4 +149,3 @@ type Cell struct {
 	DrawRate  string `json:"lucky_draw_rt"`
 	Rating    string `json:"rating_cd"`
 }
- 
